@@ -34,6 +34,23 @@ src/app/
 └── main.ts                  # Bootstrap dengan provideHttpClient
 ```
 
+## 📥 Clone Repository
+
+1. **Clone repositori ini**
+   ```bash
+   git clone https://github.com/mudio24/grammar-with-api-groq-ai.git
+   ```
+
+2. **Masuk ke folder proyek**
+   ```bash
+   cd grammar-with-api-groq-ai
+   ```
+
+3. **Install Ionic CLI** (jika belum ada)
+   ```bash
+   npm install -g @ionic/cli
+   ```
+
 ## 🚀 Cara Menjalankan
 
 1. **Install dependencies**
@@ -41,12 +58,16 @@ src/app/
    npm install
    ```
 
-2. **Jalankan aplikasi**
+2. **Konfigurasi API Key**
+   - Buka file `src/app/services/groq.service.ts`
+   - Ganti `your_groq_api_key` dengan API key Anda dari [Groq Console](https://console.groq.com/keys)
+
+3. **Jalankan aplikasi**
    ```bash
    ionic serve
    ```
 
-3. **Buka browser** di `http://localhost:8100`
+4. **Buka browser** di `http://localhost:8100`
 
 ## 📝 Cara Penggunaan
 
