@@ -1,0 +1,68 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="primary">
+    <ion-title>
+      Live Grammar Checker
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Grammar Checker</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <div class="grammar-container">
+    <!-- Judul dan Instruksi -->
+    <div class="header-section">
+      <h2>✍️ Live Grammar Checker</h2>
+      <p class="subtitle">Ketik kalimat bahasa Inggris di bawah ini, dan AI akan mengecek grammar secara otomatis!</p>
+    </div>
+
+    <!-- Textarea Input dengan FormControl -->
+    <ion-card class="input-card">
+      <ion-card-content>
+        <ion-textarea
+          [formControl]="inputControl"
+          placeholder="Type your English sentence here..."
+          rows="5"
+          autoGrow="true"
+          class="grammar-input"
+        ></ion-textarea>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Status Loading -->
+    <div class="loading-section" *ngIf="isLoading">
+      <ion-spinner name="crescent" color="primary"></ion-spinner>
+      <span class="loading-text">Sedang mengecek...</span>
+    </div>
+
+    <!-- Hasil Koreksi -->
+    <ion-card class="result-card" *ngIf="grammarResult && !isLoading">
+      <ion-card-content>
+        <!-- Status Badge -->
+        <div class="status-badge" [ngClass]="grammarResult.status === 'Correct' ? 'correct' : 'incorrect'">
+          <span class="status-icon">{{ grammarResult.status === 'Correct' ? '✓' : '✗' }}</span>
+          <span class="status-text">{{ grammarResult.status === 'Correct' ? 'Grammar Correct!' : 'Grammar Incorrect' }}</span>
+        </div>
+
+        <!-- Correction Section -->
+        <div class="correction-section">
+          <label class="correction-label">
+            {{ grammarResult.status === 'Correct' ? 'Kalimat Anda:' : 'Saran Koreksi:' }}
+          </label>
+          <p class="correction-text" [ngClass]="grammarResult.status === 'Correct' ? 'text-correct' : 'text-incorrect'">
+            {{ grammarResult.correction }}
+          </p>
+        </div>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Info Section -->
+    <div class="info-section" *ngIf="!grammarResult && !isLoading">
+      <p class="info-text">💡 Tips: Mulai mengetik dan tunggu 1 detik. AI akan otomatis mengecek grammar kalimat Anda.</p>
+    </div>
+  </div>
+</ion-content>
