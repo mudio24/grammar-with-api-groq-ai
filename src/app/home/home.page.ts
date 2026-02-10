@@ -12,7 +12,9 @@ import {
   IonAvatar,
   IonItem,
   IonLabel,
-  IonIcon
+  IonIcon,
+  IonButtons,
+  IonMenuButton
 } from '@ionic/angular/standalone';
 import { debounceTime, distinctUntilChanged, switchMap, tap, filter } from 'rxjs/operators';
 import { Subscription, of } from 'rxjs';
@@ -38,7 +40,9 @@ import { ellipsisVertical } from 'ionicons/icons';
     IonAvatar,
     IonItem,
     IonLabel,
-    IonIcon
+    IonIcon,
+    IonButtons,
+    IonMenuButton
   ],
 })
 export class HomePage implements OnInit, OnDestroy {

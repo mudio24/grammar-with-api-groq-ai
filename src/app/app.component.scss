@@ -1,0 +1,36 @@
+ion-menu.md {
+    --width: 280px;
+}
+
+ion-menu.ios {
+    --width: 280px;
+}
+
+ion-list {
+    padding: 20px 0;
+}
+
+ion-note {
+    padding-left: 20px;
+    display: block;
+    margin-bottom: 20px;
+}
+
+ion-item {
+    --padding-start: 10px;
+    --padding-end: 10px;
+    border-radius: 4px;
+
+    &.selected {
+        --background: rgba(var(--ion-color-primary-rgb), 0.14);
+
+        ion-icon {
+            color: var(--ion-color-primary);
+        }
+
+        ion-label {
+            font-weight: 600;
+            color: var(--ion-color-primary);
+        }
+    }
+}

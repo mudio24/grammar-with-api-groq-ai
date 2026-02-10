@@ -14,7 +14,7 @@ export interface GrammarResult {
 export class GroqService {
 
     // API Key dari Groq
-    private apiKey = 'YOUR_GROQ_API_KEY_HERE';
+    private apiKey = 'Masukin Apinya Kesini';
 
     // URL endpoint Groq API (OpenAI compatible)
     private apiUrl = 'https://api.groq.com/openai/v1/chat/completions';

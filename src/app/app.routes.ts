@@ -10,4 +10,8 @@ export const routes: Routes = [
     redirectTo: 'home',
     pathMatch: 'full',
   },
+  {
+    path: 'random-user',
+    loadComponent: () => import('./random-user/random-user.page').then(m => m.RandomUserPage)
+  },
 ];
