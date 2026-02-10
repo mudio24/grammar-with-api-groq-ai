@@ -99,6 +99,11 @@ Buka browser di `http://localhost:8100`.
    - Pilih **Random User**.
    - Klik tombol **Generate User**.
 
+## 👨‍💻 Author
+
+Dibuat untuk memenuhi tugas **Pemrograman Bergerak - Pertemuan 9**.
+Semoga bermanfaat! 🚀
+
 ## 📚 Mata Kuliah
 
 **Pemrograman Bergerak** - Pertemuan 8 2026
