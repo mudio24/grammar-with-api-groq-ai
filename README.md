@@ -1,123 +1,103 @@
 # 📝 Live Grammar Checker
 
 Aplikasi pengecekan grammar bahasa Inggris secara real-time menggunakan **Ionic Angular** dan **Groq AI**.
+Selain fitur utama Grammar Checker, aplikasi ini juga memiliki fitur tambahan **Random User Generator** untuk keperluan testing data profil.
 
 ## 📖 Deskripsi
 
-Aplikasi ini memungkinkan pengguna untuk mengecek grammar kalimat bahasa Inggris secara otomatis. Cukup ketik kalimat di textarea, dan AI akan menganalisis grammar dalam waktu 1 detik setelah berhenti mengetik.
+1. **Live Grammar Checker**: Cukup ketik kalimat di textarea, dan AI akan menganalisis grammar dalam waktu 1 detik setelah berhenti mengetik.
+2. **Random User Generator**: Halaman khusus untuk menghasilkan data profil pengguna palsu (Nama, Foto, Email, Lokasi) menggunakan Mock API lokal.
 
 ## ✨ Fitur
 
-- **Live Grammar Check** - Pengecekan grammar otomatis saat mengetik
-- **Reactive Programming** - Menggunakan RxJS Observable (bukan Promise/async-await)
-- **Debounce Input** - Menunggu 1 detik setelah user berhenti mengetik
-- **Visual Feedback** - Warna hijau untuk grammar benar, merah untuk salah
-- **AI Powered** - Menggunakan Groq AI dengan model Llama 3.3 70B
+### 1. Live Grammar Checker (Studi Kasus 2)
+- **Live Check** - Pengecekan otomatis saat mengetik.
+- **Reactive Programming** - Menggunakan RxJS Observable (`debounceTime`, `switchMap`).
+- **Debounce Input** - Menunggu 1 detik agar tidak spam request.
+- **Visual Feedback** - Tampilan Chat Bot UI yang interaktif (Hijau = Benar, Merah = Salah).
+- **AI Powered** - Menggunakan Groq AI (Llama 3.3 70B).
 
-## 🛠️ Teknologi
+### 2. Random User Generator (Studi Kasus 1)
+- **Generate Profile** - Membuat data user palsu dengan sekali klik.
+- **Promise & Async/Await** - Mengambil data menggunakan `lastValueFrom` (konversi dari Observable).
+- **Mock API Local** - Menggunakan server Express.js lokal untuk stabilitas data.
+
+## 🛠️ Teknologi & Dependensi
 
 - **Frontend**: Ionic Angular (Standalone Components)
-- **AI Service**: Groq API (Llama 3.3 70B)
-- **Reactive**: RxJS (debounceTime, distinctUntilChanged, switchMap)
-- **Forms**: Angular ReactiveFormsModule
+- **AI Service**: Groq API
+- **Reactive**: RxJS
+- **Backend (Mock Server)**:
+  - `express`: Untuk membuat server API lokal.
+  - `cors`: Mengizinkan akses dari Ionic (localhost).
+  - `body-parser`: Parsing request body.
 
 ## 📁 Struktur Proyek
 
 ```
 src/app/
 ├── services/
-│   └── groq.service.ts      # Service untuk komunikasi dengan Groq AI
-├── home/
-│   ├── home.page.ts         # Logic halaman dengan RxJS
-│   ├── home.page.html       # Template UI
-│   └── home.page.scss       # Styling
-└── main.ts                  # Bootstrap dengan provideHttpClient
+│   └── groq.service.ts      # Service komunikasi AI
+├── home/                    # Halaman Grammar Checker (Chat UI)
+├── random-user/             # Halaman Random User Generator
+└── main.ts                  # Bootstrap App
+backend/
+└── server.js                # Server Express untuk Mock API
 ```
-
-## 📥 Clone Repository
-
-1. **Clone repositori ini**
-   ```bash
-   git clone https://github.com/mudio24/grammar-with-api-groq-ai.git
-   ```
-
-2. **Masuk ke folder proyek**
-   ```bash
-   cd grammar-with-api-groq-ai
-   ```
-
-3. **Install Ionic CLI** (jika belum ada)
-   ```bash
-   npm install -g @ionic/cli
-   ```
 
 ## 🚀 Cara Menjalankan
 
-1. **Install dependencies**
-   ```bash
-   npm install
-   ```
+Aplikasi ini membutuhkan **dua terminal** yang berjalan bersamaan:
 
-2. **Konfigurasi API Key**
-   - Buka file `src/app/services/groq.service.ts`
-   - Ganti `your_groq_api_key` dengan API key Anda dari [Groq Console](https://console.groq.com/keys)
+### 1. Install Dependencies
+```bash
+npm install
+```
 
-3. **Jalankan aplikasi**
-   ```bash
-   ionic serve
-   ```
+### 2. Jalankan Backend Server (Terminal 1)
+PENTING: Server ini harus jalan agar fitur **Random User** bisa dipakai.
+```bash
+node backend/server.js
+```
+*Output: Mock Random User API running at http://localhost:3000*
 
-4. **Buka browser** di `http://localhost:8100`
+### 3. Konfigurasi API Key (PENTING!)
+Agar **Grammar Checker** berfungsi, edit file `src/app/services/groq.service.ts`:
+```typescript
+private apiKey = 'YOUR_GROQ_API_KEY'; // Ganti dengan key dari Groq Console
+```
+
+### 4. Jalankan Aplikasi Ionic (Terminal 2)
+```bash
+ionic serve
+```
+Buka browser di `http://localhost:8100`.
 
 ## 📝 Cara Penggunaan
 
-1. Ketik kalimat bahasa Inggris di textarea
-2. Tunggu 1 detik setelah berhenti mengetik
-3. AI akan mengecek grammar dan menampilkan hasil:
-   - ✅ **Hijau** = Grammar benar
-   - ❌ **Merah** = Grammar salah + saran koreksi
+1. **Grammar Checker**:
+   - Ketik kalimat bahasa Inggris.
+   - Tunggu 1 detik.
+   - Lihat balasan bot untuk koreksi grammar.
+      - ✅ **Hijau** = Grammar benar
+      - ❌ **Merah** = Grammar salah + saran koreksi
 
-## 🔧 Konfigurasi API Key
+   ## 📄 Contoh Input Testing
 
-Edit file `src/app/services/groq.service.ts`:
+   **Grammar Salah:**
+   - `She don't like pizza` → She doesn't like pizza
+   - `I goes to school` → I go to school
+   - `He have a car` → He has a car
 
-```typescript
-private apiKey = 'YOUR_GROQ_API_KEY';
-```
+   **Grammar Benar:**
+   - `She doesn't like pizza`
+   - `I go to school every day`
+   - `The weather is beautiful today`
 
-Dapatkan API key gratis di: https://console.groq.com/keys
-
-## 📊 RxJS Pipeline
-
-```
-User Typing → valueChanges
-      ↓
-   tap() → isLoading = true
-      ↓
-   debounceTime(1000) → Tunggu 1 detik
-      ↓
-   distinctUntilChanged() → Skip jika teks sama
-      ↓
-   filter() → Skip jika kosong
-      ↓
-   switchMap() → Cancel request lama, kirim baru
-      ↓
-   GroqService.checkGrammar()
-      ↓
-   subscribe → Tampilkan hasil
-```
-
-## 📄 Contoh Input Testing
-
-**Grammar Salah:**
-- `She don't like pizza` → She doesn't like pizza
-- `I goes to school` → I go to school
-- `He have a car` → He has a car
-
-**Grammar Benar:**
-- `She doesn't like pizza`
-- `I go to school every day`
-- `The weather is beautiful today`
+2. **Random User**:
+   - Buka menu di pojok kiri atas.
+   - Pilih **Random User**.
+   - Klik tombol **Generate User**.
 
 ## 📚 Mata Kuliah
 
