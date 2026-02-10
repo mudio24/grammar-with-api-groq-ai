@@ -7,13 +7,19 @@ import {
   IonTitle,
   IonContent,
   IonTextarea,
-  IonCard,
-  IonCardContent,
-  IonSpinner
+  IonSpinner,
+  IonFooter,
+  IonAvatar,
+  IonItem,
+  IonLabel,
+  IonIcon
 } from '@ionic/angular/standalone';
 import { debounceTime, distinctUntilChanged, switchMap, tap, filter } from 'rxjs/operators';
 import { Subscription, of } from 'rxjs';
 import { GroqService, GrammarResult } from '../services/groq.service';
+
+import { addIcons } from 'ionicons';
+import { ellipsisVertical } from 'ionicons/icons';
 
 @Component({
   selector: 'app-home',
@@ -27,9 +33,12 @@ import { GroqService, GrammarResult } from '../services/groq.service';
     IonTitle,
     IonContent,
     IonTextarea,
-    IonCard,
-    IonCardContent,
-    IonSpinner
+    IonSpinner,
+    IonFooter,
+    IonAvatar,
+    IonItem,
+    IonLabel,
+    IonIcon
   ],
 })
 export class HomePage implements OnInit, OnDestroy {
@@ -46,7 +55,9 @@ export class HomePage implements OnInit, OnDestroy {
   // Subscription untuk clean up saat component destroy
   private grammarSubscription: Subscription | null = null;
 
-  constructor(private groqService: GroqService) { }
+  constructor(private groqService: GroqService) {
+    addIcons({ ellipsisVertical });
+  }
 
   ngOnInit(): void {
     // Setup reactive stream untuk memantau perubahan input
