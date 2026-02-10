@@ -101,7 +101,7 @@ Buka browser di `http://localhost:8100`.
 
 ## 👨‍💻 Author
 
-Dibuat untuk memenuhi tugas **Pemrograman Bergerak - Pertemuan 9**.
+Dibuat untuk memenuhi tugas **Pemrograman Bergerak - Pertemuan 8**.
 Semoga bermanfaat! 🚀
 
 ## 📚 Mata Kuliah
