@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink, RouterLinkActive } from '@angular/router';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { IonApp, IonRouterOutlet, IonMenu, IonContent, IonList, IonItem, IonLabel, IonIcon, IonMenuToggle, IonListHeader, IonNote } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { homeOutline, personOutline } from 'ionicons/icons';
+import { homeOutline, personOutline, logOutOutline } from 'ionicons/icons';
+import { AuthService } from './services/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -31,7 +32,12 @@ export class AppComponent {
     { title: 'Grammar Checker', url: '/home', icon: 'home-outline' },
     { title: 'Random User', url: '/random-user', icon: 'person-outline' },
   ];
-  constructor() {
-    addIcons({ homeOutline, personOutline });
+  constructor(private authService: AuthService, private router: Router) {
+    addIcons({ homeOutline, personOutline, logOutOutline });
+  }
+
+  async logout() {
+    await this.authService.logout();
+    this.router.navigate(['/login']);
   }
 }

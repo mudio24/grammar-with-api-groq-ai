@@ -1,0 +1,74 @@
+:host {
+    --chat-bg-color: #f0f2f5;
+}
+
+.register-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100%;
+    background-color: var(--chat-bg-color);
+    padding: 16px;
+}
+
+ion-card {
+    width: 100%;
+    max-width: 400px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    background: white;
+    padding: 16px;
+}
+
+.auth-header {
+    text-align: center;
+    margin-bottom: 24px;
+
+    ion-icon {
+        font-size: 4rem;
+        color: var(--ion-color-success);
+        margin-bottom: 8px;
+    }
+}
+
+ion-item {
+    --background: transparent;
+    --padding-start: 0;
+    --inner-padding-end: 0;
+    margin-bottom: 24px;
+    overflow: visible;
+}
+
+ion-input {
+    --background: #f9fafb;
+    --color: #111827;
+    --placeholder-color: #6b7280;
+    --placeholder-opacity: 1;
+    --border-color: #d1d5db;
+    --border-radius: 12px;
+    --padding-start: 16px;
+    --padding-end: 16px;
+    --padding-top: 12px;
+    --padding-bottom: 12px;
+    font-size: 1rem;
+    min-height: 56px;
+
+    color: #111827;
+    background: #f9fafb;
+    border-radius: 12px;
+    margin-top: 8px;
+}
+
+h2 {
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 24px;
+    color: #111827;
+}
+
+.error-message {
+    padding-left: 2px;
+    margin-bottom: 10px;
+    margin-top: -10px;
+}

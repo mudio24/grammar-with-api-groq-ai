@@ -1,0 +1,53 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar color="primary">
+    <ion-title>Authentication</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div class="login-container">
+    <ion-card class="ion-no-margin">
+      <ion-card-content>
+        <div class="auth-header">
+          <ion-icon name="person-circle-outline"></ion-icon>
+          <h2>Welcome Back</h2>
+        </div>
+
+        <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
+          <ion-item lines="none" class="ion-margin-bottom">
+            <ion-input label="Username" labelPlacement="floating" fill="outline" formControlName="username" type="text"
+              placeholder="Enter your username" errorText="Username is required"></ion-input>
+          </ion-item>
+          <div *ngIf="loginForm.get('username')?.invalid && loginForm.get('username')?.touched" class="error-message">
+            <ion-text color="danger" *ngIf="loginForm.get('username')?.hasError('required')">
+              <small>Username wajib diisi.</small>
+            </ion-text>
+          </div>
+
+          <ion-item lines="none" class="ion-margin-bottom">
+            <ion-input label="Password" labelPlacement="floating" fill="outline" formControlName="password"
+              type="password" placeholder="Enter your password"></ion-input>
+          </ion-item>
+          <div *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched" class="error-message">
+            <ion-text color="danger" *ngIf="loginForm.get('password')?.hasError('required')">
+              <small>Password wajib diisi.</small>
+            </ion-text>
+            <ion-text color="danger" *ngIf="loginForm.get('password')?.hasError('minlength')">
+              <small>Password minimal 6 karakter.</small>
+            </ion-text>
+          </div>
+
+          <ion-button expand="block" shape="round" type="submit" [disabled]="!loginForm.valid" class="ion-margin-top"
+            size="large">
+            Login
+          </ion-button>
+        </form>
+
+        <p class="ion-text-center ion-margin-top">
+          Belum punya akun? <a [routerLink]="['/register']" style="text-decoration: none; font-weight: bold;">Daftar
+            Sekarang</a>
+        </p>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>

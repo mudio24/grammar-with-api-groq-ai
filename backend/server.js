@@ -1,13 +1,19 @@
 const express = require('express');
+const mysql = require('mysql2');
 const cors = require('cors');
+const bodyParser = require('body-parser');
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+
 const app = express();
 const port = 3000;
+const secretKey = 'kunci_rahasia_akses';
 
 // Middleware
 app.use(cors());
-app.use(express.json());
+app.use(bodyParser.json());
 
-// Dummy Data Random Users
+// --- FITUR LAMA: RANDOM USER MOCK API ---
 const randomUsers = [
     {
         name: { title: 'Mr', first: 'Budi', last: 'Santoso' },
@@ -51,23 +57,97 @@ const randomUsers = [
     }
 ];
 
-// Endpoint untuk mendapatkan random user
+// Endpoint untuk mendapatkan random user (FITUR LAMA)
 app.get('/api/random-user', (req, res) => {
-    // Pilih user secara acak dari array
     const randomUser = randomUsers[Math.floor(Math.random() * randomUsers.length)];
-
-    // Format response agar mirip dengan API randomuser.me yang asli
     res.json({
         results: [randomUser],
-        info: {
-            seed: "express-mock-api",
-            results: 1,
-            page: 1,
-            version: "1.0"
+        info: { seed: "express-mock-api", results: 1, page: 1, version: "1.0" }
+    });
+});
+
+// --- FITUR BARU: AUTHENTICATION (MySQL + JWT) ---
+
+// Koneksi Database
+const db = mysql.createConnection({
+    host: 'localhost',
+    user: 'root',
+    password: '', // Sesuaikan jika ada password
+    database: 'db_chatbot'
+});
+
+db.connect((err) => {
+    if (err) {
+        console.error('Koneksi database MySQL gagal (Cek XAMPP):', err.stack);
+        console.log('Fitur Auth mungkin tidak berjalan, tapi fitur Random User tetap aktif.');
+        return;
+    }
+    console.log('Terhubung ke database MySQL sebagai id ' + db.threadId);
+});
+
+// Endpoint POST /api/register
+app.post('/api/register', async (req, res) => {
+    const { username, password } = req.body;
+
+    if (!username || !password) {
+        return res.status(400).json({ message: 'Username dan password wajib diisi' });
+    }
+
+    try {
+        const hashedPassword = await bcrypt.hash(password, 10);
+        const sql = 'INSERT INTO users (username, password_hash) VALUES (?, ?)';
+
+        db.query(sql, [username, hashedPassword], (err, result) => {
+            if (err) {
+                if (err.code === 'ER_DUP_ENTRY') {
+                    return res.status(409).json({ message: 'Username sudah digunakan' });
+                }
+                return res.status(500).json({ message: 'Gagal registrasi user', error: err });
+            }
+            res.status(201).json({ message: 'Registrasi berhasil' });
+        });
+    } catch (error) {
+        res.status(500).json({ message: 'Terjadi kesalahan server', error });
+    }
+});
+
+// Endpoint POST /api/login
+app.post('/api/login', (req, res) => {
+    const { username, password } = req.body;
+
+    if (!username || !password) {
+        return res.status(400).json({ message: 'Username dan password wajib diisi' });
+    }
+
+    const sql = 'SELECT * FROM users WHERE username = ?';
+    db.query(sql, [username], async (err, results) => {
+        if (err) {
+            return res.status(500).json({ message: 'Kesalahan server', error: err });
         }
+
+        if (results.length === 0) {
+            return res.status(401).json({ message: 'Username atau password salah' });
+        }
+
+        const user = results[0];
+        const isPasswordValid = await bcrypt.compare(password, user.password_hash);
+
+        if (!isPasswordValid) {
+            return res.status(401).json({ message: 'Username atau password salah' });
+        }
+
+        const token = jwt.sign(
+            { id: user.id, username: user.username },
+            secretKey,
+            { expiresIn: '1h' }
+        );
+
+        res.json({ message: 'Login Sukses', token: token });
     });
 });
 
 app.listen(port, () => {
-    console.log(`Mock Random User API running at http://localhost:${port}`);
+    console.log(`Server berjalan di http://localhost:${port}`);
+    console.log(`- Endpoint Random User: http://localhost:${port}/api/random-user`);
+    console.log(`- Endpoint Auth: http://localhost:${port}/api/login & /register`);
 });
